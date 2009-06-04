@@ -69,13 +69,13 @@ public class AdminServiceRequestHandler implements RequestHandler {
     public AdminServiceRequestHandler(ErrorCodeMapper errorMapper,
                                       StoreRepository storeRepository,
                                       VoldemortMetadata metadata,
-                                      String metadataDir,
+                                      MetadataStore metadataStore,
                                       int streamMaxBytesReadPerSec,
                                       int streamMaxBytesWritesPerSec) {
         this.storeRepository = storeRepository;
         this.metadata = metadata;
         this.errorMapper = errorMapper;
-        this.metadataStore = MetadataStore.readFromDirectory(new File(metadataDir));
+        this.metadataStore = metadataStore;
         this.streamMaxBytesReadPerSec = streamMaxBytesReadPerSec;
         this.streamMaxBytesWritesPerSec = streamMaxBytesWritesPerSec;
     }

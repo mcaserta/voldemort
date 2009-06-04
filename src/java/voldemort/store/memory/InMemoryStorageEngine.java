@@ -80,7 +80,7 @@ public class InMemoryStorageEngine<K, V> implements StorageEngine<K, V> {
         if(values == null) {
             return false;
         }
-        synchronized(values) {
+        synchronized(map) {
             boolean deletedSomething = false;
             Iterator<Versioned<V>> iterator = values.iterator();
             while(iterator.hasNext()) {
@@ -107,7 +107,7 @@ public class InMemoryStorageEngine<K, V> implements StorageEngine<K, V> {
         if(results == null) {
             return new ArrayList<Versioned<V>>(0);
         }
-        synchronized(results) {
+        synchronized(map) {
             return new ArrayList<Versioned<V>>(results);
         }
     }

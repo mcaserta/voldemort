@@ -83,6 +83,7 @@ public class StorageService extends AbstractService {
     private final StoreRepository storeRepository;
     private final SchedulerService scheduler;
     private final VoldemortMetadata metadata;
+    private final MetadataStore metadataStore;
     private final Semaphore cleanupPermits;
     private final SocketPool socketPool;
     private final ConcurrentMap<String, StorageConfiguration> storageConfigs;
@@ -90,6 +91,7 @@ public class StorageService extends AbstractService {
 
     public StorageService(StoreRepository storeRepository,
                           VoldemortMetadata metadata,
+                          MetadataStore metadataStore,
                           SchedulerService scheduler,
                           VoldemortConfig config) {
         super(ServiceType.STORAGE);
@@ -97,6 +99,7 @@ public class StorageService extends AbstractService {
         this.scheduler = scheduler;
         this.storeRepository = storeRepository;
         this.metadata = metadata;
+        this.metadataStore = metadataStore;
         this.cleanupPermits = new Semaphore(1);
         this.storageConfigs = new ConcurrentHashMap<String, StorageConfiguration>();
         this.clientThreadPool = new ClientThreadPool(config.getClientMaxThreads(),
@@ -127,7 +130,6 @@ public class StorageService extends AbstractService {
 
     @Override
     protected void startInner() {
-        MetadataStore metadataStore = MetadataStore.readFromDirectory(new File(voldemortConfig.getMetadataDirectory()));
         registerEngine(metadataStore);
 
         /* Initialize storage configurations */

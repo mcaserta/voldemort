@@ -97,7 +97,7 @@ public class RemoteStoreComparisonTest {
                                                         socketPool,
                                                         RequestFormatType.VOLDEMORT,
                                                         false);
-        RequestHandlerFactory factory = new RequestHandlerFactory(repository, null, null);
+        RequestHandlerFactory factory = new RequestHandlerFactory(repository, null, null, null);
         SocketServer socketServer = new SocketServer("Socket-Server",
                                                      6666,
                                                      50,

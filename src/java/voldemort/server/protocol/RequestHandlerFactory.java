@@ -9,6 +9,7 @@ import voldemort.server.protocol.pb.ProtoBuffRequestHandler;
 import voldemort.server.protocol.vold.VoldemortNativeRequestHandler;
 import voldemort.server.socket.AdminServiceRequestHandler;
 import voldemort.store.ErrorCodeMapper;
+import voldemort.store.metadata.MetadataStore;
 
 /**
  * A factory that gets the appropriate request handler for a given
@@ -22,12 +23,15 @@ public class RequestHandlerFactory {
     private final StoreRepository repository;
     private final VoldemortMetadata metadata;
     private final VoldemortConfig voldemortConfig;
+    private final MetadataStore metadataStore;
 
     public RequestHandlerFactory(StoreRepository repository,
                                  VoldemortMetadata metadata,
+                                 MetadataStore metadataStore,
                                  VoldemortConfig voldemortConfig) {
         this.repository = repository;
         this.metadata = metadata;
+        this.metadataStore = metadataStore;
         this.voldemortConfig = voldemortConfig;
     }
 
@@ -41,7 +45,7 @@ public class RequestHandlerFactory {
                 return new AdminServiceRequestHandler(new ErrorCodeMapper(),
                                                       repository,
                                                       metadata,
-                                                      voldemortConfig.getMetadataDirectory(),
+                                                      metadataStore,
                                                       voldemortConfig.getStreamMaxReadBytesPerSec(),
                                                       voldemortConfig.getStreamMaxWriteBytesPerSec());
             default:

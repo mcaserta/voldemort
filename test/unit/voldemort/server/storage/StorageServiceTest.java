@@ -48,6 +48,7 @@ public class StorageServiceTest extends TestCase {
                     new Versioned<byte[]>(storeDefs.toString().getBytes()));
         storage = new StorageService(storeRepository,
                                      new VoldemortMetadata(cluster, storeDefs, 0),
+                                     mdStore,
                                      scheduler,
                                      config);
         storage.start();

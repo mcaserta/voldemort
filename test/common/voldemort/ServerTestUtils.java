@@ -84,7 +84,7 @@ public class ServerTestUtils {
                                                RequestFormatType type) {
         RequestHandlerFactory factory = new RequestHandlerFactory(getStores(storeName,
                                                                             clusterXml,
-                                                                            storesXml), null, null);
+                                                                            storesXml), null, null, null);
         SocketServer socketServer = new SocketServer("Socket-Server",
                                                      port,
                                                      5,
@@ -117,7 +117,7 @@ public class ServerTestUtils {
         server.setSendServerVersion(false);
         Context context = new Context(server, "/", Context.NO_SESSIONS);
 
-        RequestHandler handler = new RequestHandlerFactory(repository, null, null).getRequestHandler(requestFormat);
+        RequestHandler handler = new RequestHandlerFactory(repository, null, null, null).getRequestHandler(requestFormat);
         context.addServlet(new ServletHolder(new StoreServlet(handler)), "/stores");
         server.start();
         return context;
