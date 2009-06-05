@@ -1,19 +1,16 @@
 package voldemort.server;
 
 import junit.framework.TestCase;
-
-import java.util.Properties;
-import java.util.List;
-import java.util.ArrayList;
-
+import voldemort.client.*;
 import voldemort.cluster.Cluster;
 import voldemort.cluster.Node;
-import voldemort.store.StoreDefinition;
-import voldemort.store.Store;
-import voldemort.serialization.SerializerDefinition;
-import voldemort.client.*;
-import voldemort.routing.RoutingStrategy;
 import voldemort.routing.RoutingStrategyType;
+import voldemort.serialization.SerializerDefinition;
+import voldemort.store.StoreDefinition;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Properties;
 
 public class EmbeddedServerTest extends TestCase {
 

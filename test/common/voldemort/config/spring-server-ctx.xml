@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+
+    <bean
+            id="testVoldemortServer"
+            class="voldemort.server.VoldemortServer"
+            init-method="start">
+        <constructor-arg index="0" ref="config"/>
+        <constructor-arg index="1" ref="metadata"/>
+    </bean>
+
+    <bean id="config" class="voldemort.server.VoldemortConfig">
+        <constructor-arg index="0">
+            <map>
+                <entry key="node.id" value="0"/>
+                <entry key="jmx.enable" value="false"/>
+                <entry key="voldemort.home" value="/tmp"/>
+                <entry key="max.threads" value="100"/>
+                <entry key="http.enable" value="false"/>
+                <entry key="socket.enable" value="true"/>
+                <entry key="bdb.sync.transactions" value="false"/>
+                <entry key="bdb.cache.size" value="50MB"/>
+                <entry key="enable.readonly.engine" value="true"/>
+            </map>
+        </constructor-arg>
+    </bean>
+
+    <bean id="metadata" class="voldemort.server.VoldemortMetadata">
+        <!-- cluster -->
+        <constructor-arg index="0" ref="cluster"/>
+        <!-- store definition list -->
+        <constructor-arg index="1">
+            <list>
+                <ref bean="testStoreDefinition"/>
+            </list>
+        </constructor-arg>
+        <!-- node id -->
+        <constructor-arg index="2" value="0"/>
+    </bean>
+
+    <bean id="testStoreDefinition" class="voldemort.store.StoreDefinition">
+        <!-- name -->
+        <constructor-arg index="0" value="test"/>
+        <!-- type -->
+        <constructor-arg index="1" value="memory"/>
+        <!-- key serializer definition -->
+        <constructor-arg index="2" ref="testKeySerializerDefinition"/>
+        <!-- value serializer definition -->
+        <constructor-arg index="3" ref="testValSerializerDefinition"/>
+        <!-- routing tier -->
+        <constructor-arg index="4" type="voldemort.client.RoutingTier" value="CLIENT"/>
+        <!-- routing strategy type; see voldemort.routing.RoutingStrategyType constants -->
+        <constructor-arg index="5" value="consistent-routing"/>
+        <!-- replicationFactor -->
+        <constructor-arg index="6" value="1"/>
+        <!--preferredReads-->
+        <constructor-arg index="7" value="1"/>
+        <!--requiredReads-->
+        <constructor-arg index="8" value="1"/>
+        <!--preferredWrites-->
+        <constructor-arg index="9" value="1"/>
+        <!--requiredWrites-->
+        <constructor-arg index="10" value="1"/>
+        <!--retentionDays-->
+        <constructor-arg index="11" value="1"/>
+    </bean>
+
+    <bean id="cluster" class="voldemort.cluster.Cluster">
+        <!-- cluster name -->
+        <constructor-arg index="0" value="testCluster"/>
+        <!-- cluster nodes -->
+        <constructor-arg index="1">
+            <list>
+                <ref bean="clusterNode"/>
+            </list>
+        </constructor-arg>
+    </bean>
+
+    <bean id="clusterNode" class="voldemort.cluster.Node">
+        <!-- node id -->
+        <constructor-arg index="0" value="0"/>
+        <!-- host -->
+        <constructor-arg index="1" value="localhost"/>
+        <!-- http port -->
+        <constructor-arg index="2" value="8081"/>
+        <!-- socket port -->
+        <constructor-arg index="3" value="6666"/>
+        <!-- admin port -->
+        <constructor-arg index="4" value="8082"/>
+        <!-- partitions -->
+        <constructor-arg index="5">
+            <list>
+                <value>0</value>
+                <value>1</value>
+            </list>
+        </constructor-arg>
+        <!-- node status -->
+        <constructor-arg index="6" type="voldemort.cluster.NodeStatus">
+            <bean class="voldemort.cluster.NodeStatus"/>
+        </constructor-arg>
+
+    </bean>
+
+    <bean id="testKeySerializerDefinition" class="voldemort.serialization.SerializerDefinition">
+        <!-- serializer -->
+        <constructor-arg index="0" type="java.lang.String" value="json"/>
+        <!-- serialization schema -->
+        <constructor-arg index="1" type="java.lang.String" value='"string"'/>
+    </bean>
+
+    <bean id="testValSerializerDefinition" class="voldemort.serialization.SerializerDefinition">
+        <!-- serializer -->
+        <constructor-arg index="0" type="java.lang.String" value="json"/>
+        <!-- serialization schema -->
+        <constructor-arg index="1" type="java.lang.String" value='"string"'/>
+    </bean>
+
+</beans>
